@@ -1,0 +1,52 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: [ self-hosted, macOS ]
+    steps:
+      # - uses: actions/checkout@v2
+      - name: Anka VM GitHub Action
+        uses: veertuinc/anka-vm-github-action@v1.2.0-beta
+        with:
+          anka-template: "android-demo"
+          anka-run-options: "--env -N -T"
+          commands: |
+            set -exo pipefail
+
+            cd /Users/anka
+            git clone git@github.com:veertuinc/android-emulator-on-host-example.git
+            cd android-emulator-on-host-example
+
+            export JAVA_HOME=\"/Applications/Android Studio.app/Contents/jre/jdk/Contents/Home\"
+            [[ ! -d \"\$JAVA_HOME\" ]] && echo \"Missing Android Studio installation... Please install it and try again\!\" && exit 1
+            export ANDROID_HOME=\"\$HOME/Library/Android/sdk\"
+
+            ./gradlew --stop
+            ./gradlew clean
+            ./gradlew assembleDebug
+            ./gradlew test
+
+            cp -rfp * /private/var/tmp/ankafs.0/
+
+            VM_LABEL=\$(env | grep \"\${GITHUB_ACTION}_vmLabel=\" | cut -d\"=\" -f2)
+            ssh nathanpierce@192.168.64.1 \"source \\\$HOME/.zshrc
+              set -exo pipefail
+              export PATH=/usr/local/bin:\\\$PATH
+              export ANDROID_HOME=\"\\\$HOME/Library/Android/sdk\"
+              AVD_NAME=Nexus_4_API_30
+              PORT=5554
+              ~/Library/Android/sdk/tools/bin/avdmanager create avd --name \\\$AVD_NAME --device \\\"Nexus 4\\\" --package \\\"system-images;android-30;google_apis_playstore;x86\\\" --force
+              ~/Library/Android/sdk/tools/bin/sdkmanager --update
+
+              nohup ~/Library/Android/sdk/emulator/emulator -avd \\\$AVD_NAME -port \\\$PORT > foo.out 2> foo.err < /dev/null &
+              sleep 5
+              export EMULATOR_PROCESS_ID=\\\$!
+              cd \$GITHUB_WORKSPACE
+              ./vm-watcher.bash --daemon \$VM_LABEL \\\$EMULATOR_PROCESS_ID
+
+              sleep 60
+              EMULATOR_NAME=emulator-5554
+              ./gradlew connectedAndroidTest
+            \"
