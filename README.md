@@ -8,7 +8,7 @@ Solution: This repo is an example of running your build and unit tests within an
 
 **Checkout our video walkthrough showing how this project works: https://youtu.be/kwgVyHjB4p4**
 
-The [.github/worklows/main.yml](.github/worklows/main.yml) file (using the [Anka VM Github Action](https://github.com/marketplace/actions/anka-vm-github-action)) shows, how we achieved this. The pattern will be similar for whatever CI/CD tools you use.
+The [.github/workflows/main.yml](.github/worklows/main.yml) file (using the [Anka VM Github Action](https://github.com/marketplace/actions/anka-vm-github-action)) shows, how we achieved this. The pattern will be similar for whatever CI/CD tools you use.
 
 Requirements:
 
