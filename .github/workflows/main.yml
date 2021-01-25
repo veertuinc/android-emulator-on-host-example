@@ -22,7 +22,8 @@ jobs:
             export JAVA_HOME=\"/Applications/Android Studio.app/Contents/jre/jdk/Contents/Home\"
             [[ ! -d \"\$JAVA_HOME\" ]] && echo \"Missing Android Studio installation... Please install it and try again\!\" && exit 1
             export ANDROID_HOME=\"\$HOME/Library/Android/sdk\"
-
+            pwd
+            ls -laht
             ./gradlew --stop
             ./gradlew clean
             ./gradlew assembleDebug
