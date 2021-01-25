@@ -10,7 +10,7 @@ jobs:
       - name: Anka VM GitHub Action
         uses: veertuinc/anka-vm-github-action@v1.3.0
         with:
-          anka-template: "android-demo"
+          anka-vm-template-name: "android-demo"
           anka-run-options: "--env -N -T"
           commands: |
             set -exo pipefail
@@ -28,11 +28,12 @@ jobs:
             ./gradlew assembleDebug
             ./gradlew test
 
-            cp -rfp * /private/var/tmp/ankafs.0/
-
             VM_LABEL=\$(env | grep \"\${GITHUB_ACTION}_vmLabel=\" | cut -d\"=\" -f2)
-            ssh nathanpierce@192.168.64.1 \"source \\\$HOME/.zshrc
-              set -exo pipefail
+            HOST_STORAGE_LOC="/tmp/\$GITHUB_RUN_NUMBER-\$GITHUB_RUN_ID"
+
+            ssh nathanpierce@192.168.64.1 \"source \\\$HOME/.zshrc; set -exo pipefail; mkdir -p \$HOST_STORAGE_LOC && anka cp -af \${VM_LABEL}:/Users/anka/android-emulator-on-host-example \$HOST_STORAGE_LOC\"
+
+            ssh nathanpierce@192.168.64.1 \"source \\\$HOME/.zshrc; set -exo pipefail
               export PATH=/usr/local/bin:\\\$PATH
               export ANDROID_HOME=\"\\\$HOME/Library/Android/sdk\"
               AVD_NAME=Nexus_4_API_30
@@ -43,7 +44,7 @@ jobs:
               nohup ~/Library/Android/sdk/emulator/emulator -avd \\\$AVD_NAME -port \\\$PORT > foo.out 2> foo.err < /dev/null &
               sleep 5
               export EMULATOR_PROCESS_ID=\\\$!
-              cd \$GITHUB_WORKSPACE
+              cd \$HOST_STORAGE_LOC
               ./vm-watcher.bash --daemon \$VM_LABEL \\\$EMULATOR_PROCESS_ID
 
               sleep 60
