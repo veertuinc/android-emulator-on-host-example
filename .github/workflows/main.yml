@@ -13,13 +13,12 @@ jobs:
           anka-vm-template-name: "android-demo"
           anka-run-options: "--env -N -T"
           skip-registry-pull: true
+          anka-cp-destination-directory: "/Users/anka/android-emulator-on-host-example"
           vm-commands: |
             set -exo pipefail
 
-            cd /Users/anka
-            git clone git@github.com:veertuinc/android-emulator-on-host-example.git
-            cd android-emulator-on-host-example
-
+            cd /Users/anka/android-emulator-on-host-example
+            
             export JAVA_HOME=\"/Applications/Android Studio.app/Contents/jre/jdk/Contents/Home\"
             [[ ! -d \"\$JAVA_HOME\" ]] && echo \"Missing Android Studio installation... Please install it and try again\!\" && exit 1
             export ANDROID_HOME=\"\$HOME/Library/Android/sdk\"
