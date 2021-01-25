@@ -12,6 +12,7 @@ jobs:
         with:
           anka-vm-template-name: "android-demo"
           anka-run-options: "--env -N -T"
+          skip-registry-pull: true
           commands: |
             set -exo pipefail
 
