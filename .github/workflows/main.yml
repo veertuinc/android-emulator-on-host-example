@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: [ self-hosted, macOS ]
     steps:
-      # - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Anka VM GitHub Action
         uses: veertuinc/anka-vm-github-action@v1.3.0
         with:
@@ -16,14 +16,12 @@ jobs:
           anka-cp-destination-directory: "/Users/anka/android-emulator-on-host-example/"
           vm-commands: |
             set -exo pipefail
-
+            
             cd /Users/anka/android-emulator-on-host-example
 
             export JAVA_HOME=\"/Applications/Android Studio.app/Contents/jre/jdk/Contents/Home\"
             [[ ! -d \"\$JAVA_HOME\" ]] && echo \"Missing Android Studio installation... Please install it and try again\!\" && exit 1
             export ANDROID_HOME=\"\$HOME/Library/Android/sdk\"
-            pwd
-            ls -laht
             ./gradlew --stop
             ./gradlew clean
             ./gradlew assembleDebug
