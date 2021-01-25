@@ -8,7 +8,7 @@ jobs:
     steps:
       # - uses: actions/checkout@v2
       - name: Anka VM GitHub Action
-        uses: veertuinc/anka-vm-github-action@v1.2.0-beta
+        uses: veertuinc/anka-vm-github-action@v1.3.0
         with:
           anka-template: "android-demo"
           anka-run-options: "--env -N -T"
