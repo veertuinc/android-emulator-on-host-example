@@ -50,6 +50,7 @@ jobs:
               sleep 5
               export EMULATOR_PROCESS_ID=\\\$!
               cd \$HOST_STORAGE_LOC
+              ls -laht
               ./vm-watcher.bash --daemon \$VM_LABEL \\\$EMULATOR_PROCESS_ID
 
               sleep 60
