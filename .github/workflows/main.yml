@@ -34,7 +34,7 @@ jobs:
             ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nathanpierce@192.168.64.1 \"source \\\$HOME/.zshrc
               set -exo pipefail
               mkdir -p \$HOST_STORAGE_LOC
-              /usr/local/bin/anka cp -af \${VM_LABEL}:/Users/anka/android-emulator-on-host-example \$HOST_STORAGE_LOC
+              /usr/local/bin/anka cp -af \${VM_LABEL}:/Users/anka/android-emulator-on-host-example/ \$HOST_STORAGE_LOC
             \"
 
             ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nathanpierce@192.168.64.1 \"source \\\$HOME/.zshrc
