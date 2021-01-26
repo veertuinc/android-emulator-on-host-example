@@ -43,7 +43,7 @@ jobs:
               export ANDROID_HOME=\"\\\$HOME/Library/Android/sdk\"
               AVD_NAME=Nexus_4_API_30
               PORT=5554
-              ~/Library/Android/sdk/tools/bin/avdmanager create avd --name \\\$AVD_NAME --device \\\"Nexus 4\\\" --package \\\"system-images;android-30;google_apis_playstore;x86\\\" --force
+              ~/Library/Android/sdk/tools/bin/avdmanager create avd --name \\\$AVD_NAME --device \\\"Nexus 4\\\" --package \\\"system-images;android-30;google_apis;x86\\\" --force
               ~/Library/Android/sdk/tools/bin/sdkmanager --update
 
               nohup ~/Library/Android/sdk/emulator/emulator -avd \\\$AVD_NAME -port \\\$PORT > foo.out 2> foo.err < /dev/null &
